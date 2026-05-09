@@ -10,7 +10,7 @@ Refactor the [PolyArch/humanize](https://github.com/PolyArch/humanize) Claude Co
 |--------|---------------------|----------------------------|
 | Platform | Claude Code plugin | OpenCode plugin |
 | Implementation agent | Claude (Anthropic) | MiMo-V2.5-Pro (Xiaomi) |
-| Review agent | OpenAI Codex (GPT-5.5) | MiMo-V2.5-Pro (Xiaomi) |
+| Review agent | OpenAI GPT (OpenAI) | MiMo-V2.5-Pro (Xiaomi) |
 | Plugin system | `.claude-plugin/` + Bash hooks | `.opencode/plugins/` + JS/TS |
 | Language | Bash (~15K lines) + Python (1 file) | TypeScript (plugin) + Bash (utilities) |
 | Hook model | `PreToolUse`, `PostToolUse`, `Stop`, `UserPromptSubmit` | `tool.execute.before/after`, `session.idle`, event system |
@@ -131,17 +131,17 @@ The different system prompts and permission sets create functional diversity eve
 | `PreToolUse` hook | `tool.execute.before` | Validator hooks |
 | `PostToolUse` hook | `tool.execute.after` | Post-action hooks |
 | `UserPromptSubmit` hook | Plugin event subscription | Input validation |
-| Codex CLI binary | Custom tool (JS) | Calls MiMo API directly |
+| External review CLI | Custom tool (JS) | Calls MiMo API directly |
 | `.claude/commands/` | `.opencode/commands/` | Markdown slash commands |
 | `.claude/skills/` | `.opencode/skills/` | SKILL.md definitions |
 | `.claude/agents/` | `.opencode/agents/` | Agent definitions |
 | `CLAUDE.md` | `AGENTS.md` | Project rules |
 | `.humanize/` runtime dir | `.mimo-humanize/` runtime dir | State, plans, summaries |
-| `ask-codex.sh` | `mimo-review.ts` tool | Review invocation |
+| `ask-review.sh` (original) | `mimo-review.ts` tool | Review invocation |
 
 ## Critical Challenge: Stop Hook Replacement
 
-The **Stop hook** is the heart of the original humanize. In Claude Code, when the agent tries to stop, the hook fires and can send work to Codex for review, then inject feedback to continue the loop.
+The **Stop hook** is the heart of the original humanize. In Claude Code, when the agent tries to stop, the hook fires and can send work to the reviewer for review, then inject feedback to continue the loop.
 
 In OpenCode:
 - `session.idle` fires when the agent finishes responding
@@ -208,7 +208,7 @@ This is the **highest-risk component** and should be prototyped first in Phase 2
 
 ### Templates (copied from humanize, adapted)
 - [ ] `prompt-template/block/*.md` -- Blocking message templates
-- [ ] `prompt-template/mimo/*.md` -- MiMo reviewer prompts (replaces codex/)
+- [ ] `prompt-template/mimo/*.md` -- MiMo reviewer prompts
 - [ ] `prompt-template/build/*.md` -- Build agent prompts (replaces claude/)
 - [ ] `prompt-template/plan/*.md` -- Plan generation templates
 - [ ] `prompt-template/idea/*.md` -- Idea generation templates
