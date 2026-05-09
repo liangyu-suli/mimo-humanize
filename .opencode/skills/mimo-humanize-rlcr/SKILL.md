@@ -13,7 +13,7 @@ This skill provides detailed instructions for working within an active RLCR loop
 1. Read the plan and goal tracker
 2. Implement tasks according to routing tags:
    - `coding` tasks: implement directly
-   - `analyze` tasks: request analysis via mimo-review tool
+   - `analyze` tasks: use the Task tool to invoke the `mimo-reviewer` agent for analysis (do NOT use the `mimo-review` tool -- that is for automatic round review by the plugin)
 3. Update goal-tracker.md with progress
 4. Write round-N-summary.md
 5. Exit (reviewer will intercept)

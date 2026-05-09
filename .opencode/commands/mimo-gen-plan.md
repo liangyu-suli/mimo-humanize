@@ -63,7 +63,7 @@ If `--direct` mode, skip this phase (set PLAN_CONVERGENCE_STATUS=partially_conve
 
 Otherwise, run iterative challenge/refine rounds:
 
-1. **Reviewer MiMo Reasonability Review**: Invoke mimo-reviewer with candidate plan
+1. **Reviewer MiMo Reasonability Review**: Use the Task tool to invoke the `mimo-reviewer` agent with the candidate plan (do NOT use the `mimo-review` tool -- that is for code review, not plan review)
    - Output: AGREE, DISAGREE, REQUIRED_CHANGES, OPTIONAL_IMPROVEMENTS, UNRESOLVED
 2. **Build Agent Revision**: Update candidate plan to address REQUIRED_CHANGES
 3. **Convergence Assessment**: Track topic, positions, resolution status
