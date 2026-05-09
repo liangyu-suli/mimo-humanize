@@ -607,12 +607,15 @@ Provide constructive feedback on completeness, correctness, and clarity.`
         isProcessingReview = true
         console.log(`[mimo-humanize] Round ${summary.round} complete, invoking reviewer...`)
 
+        // Get the session ID that went idle
+        const sessionID = (event as any)?.properties?.sessionID || (event as any)?.sessionID
+
         try {
           const reviewPrompt = buildReviewPrompt(summary, activeState, activeLoopDir)
           const promptPath = join(activeLoopDir, `round-${summary.round}-review-prompt.md`)
           writeFileSync(promptPath, reviewPrompt, "utf-8")
 
-          await invokeReviewer(client, reviewPrompt, activeLoopDir, summary.round)
+          await invokeReviewer(client, reviewPrompt, activeLoopDir, summary.round, sessionID)
         } catch (err) {
           console.error(`[mimo-humanize] Review failed: ${err}`)
         } finally {
@@ -722,24 +725,50 @@ async function invokeReviewer(
   client: any,
   prompt: string,
   loopDir: string,
-  round: number
+  round: number,
+  parentSessionID?: string
 ): Promise<void> {
   const reviewResultPath = join(loopDir, `round-${round}-review-result.md`)
 
   try {
-    if (client?.agent?.invoke) {
-      const result = await client.agent.invoke({
-        agent: "mimo-reviewer",
-        prompt: prompt,
+    if (client?.session?.create && client?.session?.prompt) {
+      // Create a child session for the review
+      const session = await client.session.create({
+        body: { parentID: parentSessionID, title: `RLCR Review Round ${round}` }
       })
-      writeFileSync(reviewResultPath, result.content || result.text || String(result), "utf-8")
+
+      const sessionID = session?.data?.id
+      if (!sessionID) {
+        throw new Error("Failed to create review session: no session ID returned")
+      }
+
+      // Send review prompt targeting the mimo-reviewer agent
+      const result = await client.session.prompt({
+        path: { id: sessionID },
+        body: {
+          agent: "mimo-reviewer",
+          parts: [{ type: "text", text: prompt }]
+        }
+      })
+
+      // Extract response text
+      const parts = result?.data?.parts || []
+      const textParts = parts
+        .filter((p: any) => p.type === "text")
+        .map((p: any) => p.text || "")
+      const reviewContent = textParts.join("\n") || "No review content returned."
+
+      writeFileSync(reviewResultPath, reviewContent, "utf-8")
+      console.log(`[mimo-humanize] Review result written to: ${reviewResultPath}`)
     } else {
+      // SDK not available - write prompt for manual invocation
+      console.log(`[mimo-humanize] SDK session API not available.`)
       console.log(`[mimo-humanize] Review prompt written to: ${join(loopDir, `round-${round}-review-prompt.md`)}`)
-      console.log(`[mimo-humanize] Invoke reviewer manually via mimo-review tool`)
+      console.log(`[mimo-humanize] Invoke reviewer manually via @mimo-review tool`)
     }
   } catch (err) {
     console.error(`[mimo-humanize] Failed to invoke reviewer: ${err}`)
-    writeFileSync(reviewResultPath, `Review failed: ${err}\n\nPlease re-run the review.`, "utf-8")
+    writeFileSync(reviewResultPath, `Review failed: ${err}\n\nPlease re-run the review manually.`, "utf-8")
   }
 }
 
