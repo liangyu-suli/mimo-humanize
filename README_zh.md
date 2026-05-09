@@ -6,6 +6,16 @@
 
 ## 安装
 
+**第一步：设置 API 密钥**（如果已设置则跳过）
+
+```bash
+echo 'export MIMO_API_KEY=your-api-key-here' >> ~/.zshrc && source ~/.zshrc
+```
+
+从 [小米 MiMo](https://token-plan-sgp.xiaomimimo.com) 获取密钥。
+
+**第二步：安装到你的项目**
+
 将以下内容粘贴到 OpenCode 中，Agent 会自动为你安装：
 
 ```
@@ -18,7 +28,7 @@ Please install mimo-humanize from https://github.com/liangyu-suli/mimo-humanize
 git clone https://github.com/liangyu-suli/mimo-humanize.git /tmp/mimo-humanize && /tmp/mimo-humanize/scripts/install.sh --target "$(pwd)" && rm -rf /tmp/mimo-humanize
 ```
 
-然后 **重启 OpenCode**（必须重新加载插件）。
+**第三步：重启 OpenCode**（必须重新加载插件）
 
 重启后，输入 `/mimo` 查看所有命令：
 
@@ -29,8 +39,6 @@ git clone https://github.com/liangyu-suli/mimo-humanize.git /tmp/mimo-humanize &
 /mimo-refine-plan       处理审查者的注释
 /mimo-cancel-rlcr-loop  取消活跃循环
 ```
-
-> **前提条件：** 已安装 [OpenCode](https://opencode.ai) + 在 `~/.zshrc` 中设置了 `MIMO_API_KEY`
 
 ## 详细安装
 

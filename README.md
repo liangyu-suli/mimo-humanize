@@ -6,6 +6,16 @@ An iterative development plugin for [OpenCode](https://opencode.ai) that uses [M
 
 ## Install
 
+**Step 1: Set your API key** (skip if already set)
+
+```bash
+echo 'export MIMO_API_KEY=your-api-key-here' >> ~/.zshrc && source ~/.zshrc
+```
+
+Get your key from [Xiaomi MiMo](https://token-plan-sgp.xiaomimimo.com).
+
+**Step 2: Install into your project**
+
 Paste this into OpenCode and the agent will install it for you:
 
 ```
@@ -18,7 +28,7 @@ Or run the one-liner yourself:
 git clone https://github.com/liangyu-suli/mimo-humanize.git /tmp/mimo-humanize && /tmp/mimo-humanize/scripts/install.sh --target "$(pwd)" && rm -rf /tmp/mimo-humanize
 ```
 
-Then **restart OpenCode** (required to load the plugin).
+**Step 3: Restart OpenCode** (required to load the plugin)
 
 After restart, type `/mimo` to see all commands:
 
@@ -29,8 +39,6 @@ After restart, type `/mimo` to see all commands:
 /mimo-refine-plan       Refine plan with annotations
 /mimo-cancel-rlcr-loop  Cancel active loop
 ```
-
-> **Prerequisites:** [OpenCode](https://opencode.ai) installed + `MIMO_API_KEY` set in `~/.zshrc`
 
 ## Detailed Installation
 
