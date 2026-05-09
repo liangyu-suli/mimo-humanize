@@ -415,21 +415,20 @@ Format: BL-N: <problem> -> <solution>
 `, "utf-8")
           }
 
-          return `RLCR loop started!
+          return `RLCR loop initialized.
 
 Loop directory: ${loopDir}
 Plan: ${planFile || "(none - code review mode)"}
 Branch: ${startBranch}
 Max iterations: ${state.maxIterations}
 Review phase: ${state.reviewStarted ? "ACTIVE (skip-impl)" : "implementation"}
-
-Next steps:
-1. Work on your plan tasks
-2. Write round summaries to: ${loopDir}/round-N-summary.md
-3. The reviewer will automatically check your work when you finish a round
-4. Use mimo-cancel-rlcr-loop to stop the loop
-
 Goal tracker: ${loopDir}/goal-tracker.md
+
+START IMPLEMENTING NOW.
+Read the plan and goal tracker, then begin working on the first milestone.
+When you complete a set of tasks, write a round summary to: ${loopDir}/round-N-summary.md
+The reviewer will automatically evaluate your work and provide feedback.
+To stop the loop, use mimo-cancel-rlcr-loop.
 `
         },
       }),
