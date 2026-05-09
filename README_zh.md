@@ -14,7 +14,7 @@
 echo 'export MIMO_API_KEY=your-api-key-here' >> ~/.zshrc && source ~/.zshrc
 ```
 
-从 [小米 MiMo](https://token-plan-sgp.xiaomimimo.com) 获取密钥。
+从小米 MiMo 获取密钥（在 shell 配置中设置 `MIMO_API_KEY`）。
 
 **第二步：安装到你的项目**
 

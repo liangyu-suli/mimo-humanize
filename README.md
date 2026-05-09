@@ -14,7 +14,7 @@ An iterative development plugin for [OpenCode](https://opencode.ai) that uses Mi
 echo 'export MIMO_API_KEY=your-api-key-here' >> ~/.zshrc && source ~/.zshrc
 ```
 
-Get your key from [Xiaomi MiMo](https://token-plan-sgp.xiaomimimo.com).
+Get your key from Xiaomi MiMo (set `MIMO_API_KEY` in your shell profile).
 
 **Step 2: Install into your project**
 
