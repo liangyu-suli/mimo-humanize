@@ -300,14 +300,14 @@ const DANGEROUS_BASH_PATTERNS = [
 // ========================================
 
 export const MimoHumanize: Plugin = async ({ project, client, $, directory, worktree }) => {
-  const projectRoot = worktree || directory
+  const projectRoot = worktree || directory || process.cwd()
   const pluginRoot = join(projectRoot, ".opencode")
 
   let activeLoopDir: string | null = null
   let activeState: LoopState | null = null
   let isProcessingReview = false
 
-  console.log("[mimo-humanize] Plugin initialized")
+  console.log(`[mimo-humanize] Plugin initialized (projectRoot: ${projectRoot})`)
 
   return {
     // ------------------------------------
@@ -327,7 +327,7 @@ export const MimoHumanize: Plugin = async ({ project, client, $, directory, work
         },
         async execute(args, context) {
           const { directory, worktree } = context
-          const root = worktree || directory
+          const root = worktree || directory || process.cwd()
 
           // Create loop directory
           const loopDir = createLoopDir(root)
@@ -440,7 +440,7 @@ To stop the loop, use mimo-cancel-rlcr-loop.
         },
         async execute(args, context) {
           const { directory, worktree } = context
-          const root = worktree || directory
+          const root = worktree || directory || process.cwd()
 
           const loopDir = findActiveLoop(root)
           if (!loopDir) {
@@ -471,7 +471,7 @@ Review results and summaries are still available for reference.
         args: {},
         async execute(args, context) {
           const { directory, worktree } = context
-          const root = worktree || directory
+          const root = worktree || directory || process.cwd()
 
           const loopDir = findActiveLoop(root)
           if (!loopDir) {
@@ -510,7 +510,7 @@ Goal tracker: ${join(loopDir, GOAL_TRACKER_FILE)}
         },
         async execute(args, context) {
           const { directory, worktree } = context
-          const root = worktree || directory
+          const root = worktree || directory || process.cwd()
           const mode = args.mode || "round-review"
           const round = args.round || 0
 
