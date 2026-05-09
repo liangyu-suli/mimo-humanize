@@ -1,6 +1,6 @@
 # Mimo-Humanize
 
-An iterative development plugin for [OpenCode](https://opencode.ai) that uses [MiMo-V2.5-Pro](https://api.xiaomi.com) for both implementation and independent review. Creates a feedback loop where one MiMo agent implements plans and another MiMo agent independently reviews progress, ensuring quality through continuous refinement.
+An iterative development plugin for [OpenCode](https://opencode.ai) that uses MiMo-V2.5-Pro for both implementation and independent review. Creates a feedback loop where one MiMo agent implements plans and another MiMo agent independently reviews progress, ensuring quality through continuous refinement.
 
 **Current Version**: 0.1.0 | **[中文文档](README_zh.md)**
 
@@ -40,7 +40,63 @@ After restart, type `/mimo` to see all commands:
 /mimo-cancel-rlcr-loop  Cancel active loop
 ```
 
-## Detailed Installation
+## How It Works
+
+```
+  ┌─────────────────────────────────────────────────────────────────┐
+  │                      RLCR Loop Architecture                     │
+  └─────────────────────────────────────────────────────────────────┘
+
+  You ──► /mimo-start-rlcr-loop plan.md
+              │
+              ▼
+  ┌──────────────────────┐
+  │   Plan Understanding │  ◄── Quiz verifies you read the plan
+  │        Quiz          │
+  └──────────┬───────────┘
+              │
+              ▼
+  ┌──────────────────────┐      ┌──────────────────────┐
+  │    Build Agent       │      │    Reviewer Agent    │
+  │   (mimo-build)       │◄────►│   (mimo-reviewer)    │
+  │                      │      │                      │
+  │  • Implements tasks  │      │  • Reviews summaries │
+  │  • Writes code       │      │  • Checks git diff   │
+  │  • Runs tests        │      │  • [P0-9] severity   │
+  │  • Writes summary    │      │  • Goal alignment    │
+  └──────────┬───────────┘      └──────────┬───────────┘
+              │                              │
+              │   round-N-summary.md         │
+              └──────────────┬───────────────┘
+                             │
+                             ▼
+                  session.idle event
+                  (plugin intercepts)
+                             │
+              ┌──────────────┴──────────────┐
+              │                             │
+              ▼                             ▼
+     ┌────────────────┐           ┌────────────────┐
+     │ Issues found   │           │   COMPLETE     │
+     │                │           │                │
+     │ Feedback ──────┼──► Build  │ Enter code     │
+     │ inject to      │    Agent  │ review phase   │
+     │ session        │    fixes  │                │
+     └────────────────┘           └────────┬───────┘
+                                           │
+                                           ▼
+                                  ┌────────────────┐
+                                  │  Final review  │
+                                  │  of git diff   │
+                                  │                │
+                                  │  Clean? ──► Done!
+                                  │  Issues? ──► Fix & re-review
+                                  └────────────────┘
+
+  Both agents: MiMo-V2.5-Pro (same model, different system prompts)
+  Build agent: full read/write/bash access
+  Reviewer:    read-only + git (no incentive to approve own work)
+```
 
 ### Prerequisites
 
@@ -207,74 +263,6 @@ This launches multiple parallel explore agents, each investigating from a differ
 | `--discussion` | Iterative convergence (default) |
 | `--direct` | Skip convergence, generate immediately |
 | `--auto-start-rlcr-if-converged` | Start loop automatically if plan converges |
-
-## How It Works
-
-### The RLCR Loop
-
-```
-You: /mimo-start-rlcr-loop plan.md
-         |
-         v
-  [Plan Understanding Quiz]
-  (verifies you read the plan)
-         |
-         v
-  [Build Agent implements tasks]
-  (coding tasks -> direct, analyze tasks -> reviewer)
-         |
-         v
-  [Build Agent writes round-N-summary.md]
-         |
-         v
-  [Session idle -> Plugin intercepts]
-         |
-         v
-  [Reviewer Agent checks summary]
-         |
-         +---> Issues found: feedback -> build agent continues
-         |
-         +---> COMPLETE: enter code review phase
-                   |
-                   v
-              [Reviewer checks git diff]
-              [P0-9] severity markers
-                   |
-                   +---> Issues: build agent fixes -> re-review
-                   |
-                   +---> Clean: loop finalizes
-```
-
-### Two-Agent Architecture
-
-Both agents use MiMo-V2.5-Pro but with different system prompts and permissions:
-
-| Agent | Role | Can Edit? | Can Run Bash? |
-|-------|------|-----------|---------------|
-| **Build** (mimo-build) | Implements plan tasks | Yes | Yes |
-| **Reviewer** (mimo-reviewer) | Reviews work quality | No | Git/read only |
-
-This creates functional diversity: the reviewer has no incentive to "approve its own work" because it operates with a completely different mandate and permission set.
-
-### Goal Tracker System
-
-Every loop maintains a `goal-tracker.md` with two sections:
-
-**IMMUTABLE** (set once in Round 0, never changed):
-- Ultimate Goal
-- Acceptance Criteria (AC-1, AC-2, ...)
-
-**MUTABLE** (updated each round):
-- Active Tasks
-- Completed Items
-- Deferred Items
-- Plan Evolution Log
-
-This prevents goal drift - the build agent can't "forget" what it was supposed to do.
-
-### BitLesson Knowledge Capture
-
-Each project maintains `.mimo-humanize/bitlesson.md` - a knowledge base of problems encountered and solutions found. Before each task, the bitlesson-selector agent picks relevant entries. Over time, this prevents repeating past mistakes.
 
 ## Configuration
 
