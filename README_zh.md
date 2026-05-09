@@ -2,6 +2,8 @@
 
 [OpenCode](https://opencode.ai) 的迭代开发插件，使用 MiMo-V2.5-Pro 同时实现代码编写和独立审查。通过一个 MiMo Agent 实现计划、另一个 MiMo Agent 独立审查进度的反馈循环，确保持续优化的质量。
 
+> RLCR 循环、目标追踪和审查架构与模型无关、与 Agent 框架无关。任何 LLM 都可以驱动构建和审查 Agent -- MiMo-V2.5-Pro 只是默认选择。任何支持插件或钩子的 Agent 框架都可以承载此工作流 -- OpenCode 只是参考实现。
+
 **当前版本**: 0.1.0 | **[English](README.md)**
 
 ## 安装

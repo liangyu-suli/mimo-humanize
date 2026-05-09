@@ -2,6 +2,8 @@
 
 An iterative development plugin for [OpenCode](https://opencode.ai) that uses MiMo-V2.5-Pro for both implementation and independent review. Creates a feedback loop where one MiMo agent implements plans and another MiMo agent independently reviews progress, ensuring quality through continuous refinement.
 
+> The RLCR loop, goal tracking, and review architecture are model-agnostic and agent-agnostic. Any LLM can power the build and reviewer agents -- MiMo-V2.5-Pro is simply the default. Any agent framework that supports plugins or hooks can host this workflow -- OpenCode is simply the reference implementation.
+
 **Current Version**: 0.1.0 | **[中文文档](README_zh.md)**
 
 ## Install
