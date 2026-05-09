@@ -15,10 +15,11 @@ This command MUST ONLY generate a plan document. It MUST NOT implement tasks or 
 
 ## Phase 1: IO Validation
 
-1. Validate `--input` file exists and is readable
-2. Validate `--output` directory exists and is writable
-3. Validate `--output` file does not already exist
-4. If any validation fails, report error and stop
+1. **Check current mode**: If OpenCode is in plan mode, warn the user that the output file cannot be written. Suggest switching to build mode first. Display: "NOTE: OpenCode is in plan mode -- plan file cannot be written. Switch to build mode to generate the plan file."
+2. Validate `--input` file exists and is readable
+3. Validate `--output` directory exists and is writable
+4. Validate `--output` file does not already exist
+5. If any validation fails, report error and stop
 
 ---
 
