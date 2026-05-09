@@ -34,11 +34,12 @@ This command MUST ONLY generate a plan document. It MUST NOT implement tasks or 
 
 ## Phase 3: MiMo First-Pass Analysis
 
-1. Invoke MiMo (via Task tool or direct prompt) with:
+1. Use the Task tool to invoke the `mimo-plan` agent (NOT `mimo-review`) with:
    - Repository context (README, main files, structure)
    - Raw draft content
    - Request: critique assumptions, identify missing requirements, propose stronger directions
-2. Preserve output as "MiMo Analysis v1" with format:
+2. The `mimo-review` tool is for code review only -- do NOT use it for strategic analysis
+3. Preserve output as "MiMo Analysis v1" with format:
    - CORE_RISKS
    - MISSING_REQUIREMENTS
    - TECHNICAL_GAPS
