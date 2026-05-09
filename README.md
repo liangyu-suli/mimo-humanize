@@ -4,37 +4,35 @@ An iterative development plugin for [OpenCode](https://opencode.ai) that uses [M
 
 **Current Version**: 0.1.0 | **[中文文档](README_zh.md)**
 
-## Quick Start
+## Install
 
-**One-line install (paste into OpenCode):**
+Paste this into OpenCode and the agent will install it for you:
+
 ```
-git clone https://github.com/PolyArch/mimo-humanize.git /tmp/mimo-humanize && /tmp/mimo-humanize/scripts/install.sh --target "$(pwd)" && rm -rf /tmp/mimo-humanize
+Please install mimo-humanize from https://github.com/liangyu-suli/mimo-humanize
 ```
 
-**Manual install:**
+Or run the one-liner yourself:
+
 ```bash
-# 1. Set your API key (one-time)
-echo 'export MIMO_API_KEY=your-api-key-here' >> ~/.zshrc
-source ~/.zshrc
-
-# 2. Install into your project
-cd /path/to/your/project
-git clone https://github.com/PolyArch/mimo-humanize.git /tmp/mimo-humanize
-/tmp/mimo-humanize/scripts/install.sh
-rm -rf /tmp/mimo-humanize
-
-# 3. Restart OpenCode (required to load plugin)
-# Exit current session, then run:
-opencode
-
-# 4. Start using commands:
-#    /mimo-gen-plan --input draft.md --output plan.md
-#    /mimo-start-rlcr-loop plan.md
+git clone https://github.com/liangyu-suli/mimo-humanize.git /tmp/mimo-humanize && /tmp/mimo-humanize/scripts/install.sh --target "$(pwd)" && rm -rf /tmp/mimo-humanize
 ```
 
-> **Important:** You must restart OpenCode after installation. OpenCode loads plugins and discovers commands at startup. There is no hot-reload for plugins.
+Then **restart OpenCode** (required to load the plugin).
 
-## Installation
+After restart, type `/mimo` to see all commands:
+
+```
+/mimo-start-rlcr-loop   Start iterative loop with MiMo review
+/mimo-gen-plan          Generate plan from draft
+/mimo-gen-idea          Generate ideas via parallel exploration
+/mimo-refine-plan       Refine plan with annotations
+/mimo-cancel-rlcr-loop  Cancel active loop
+```
+
+> **Prerequisites:** [OpenCode](https://opencode.ai) installed + `MIMO_API_KEY` set in `~/.zshrc`
+
+## Detailed Installation
 
 ### Prerequisites
 
@@ -46,13 +44,13 @@ opencode
 Just paste this into OpenCode and the agent will install it for you:
 
 ```
-Please install mimo-humanize from https://github.com/PolyArch/mimo-humanize
+Please install mimo-humanize from https://github.com/liangyu-suli/mimo-humanize
 ```
 
 Or paste this command directly:
 
 ```bash
-git clone https://github.com/PolyArch/mimo-humanize.git /tmp/mimo-humanize && /tmp/mimo-humanize/scripts/install.sh --target "$(pwd)" && rm -rf /tmp/mimo-humanize
+git clone https://github.com/liangyu-suli/mimo-humanize.git /tmp/mimo-humanize && /tmp/mimo-humanize/scripts/install.sh --target "$(pwd)" && rm -rf /tmp/mimo-humanize
 ```
 
 ### Method 2: Manual Install
@@ -63,7 +61,7 @@ export MIMO_API_KEY=your-api-key-here
 
 # Clone and install
 cd /path/to/your/project
-git clone https://github.com/PolyArch/mimo-humanize.git /tmp/mimo-humanize
+git clone https://github.com/liangyu-suli/mimo-humanize.git /tmp/mimo-humanize
 /tmp/mimo-humanize/scripts/install.sh
 rm -rf /tmp/mimo-humanize
 ```

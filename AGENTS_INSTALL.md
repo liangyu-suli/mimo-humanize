@@ -6,7 +6,7 @@ When a user asks to install mimo-humanize, run these commands:
 
 ```bash
 # Clone
-git clone https://github.com/PolyArch/mimo-humanize.git /tmp/mimo-humanize
+git clone https://github.com/liangyu-suli/mimo-humanize.git /tmp/mimo-humanize
 
 # Install into current project
 /tmp/mimo-humanize/scripts/install.sh --target "$(pwd)"

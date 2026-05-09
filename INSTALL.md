@@ -20,7 +20,7 @@ test -z "$MIMO_API_KEY" && echo "ERROR: MIMO_API_KEY not set. User must run: exp
 
 ```bash
 cd /tmp
-git clone https://github.com/PolyArch/mimo-humanize.git
+git clone https://github.com/liangyu-suli/mimo-humanize.git
 cd mimo-humanize
 ```
 
@@ -138,7 +138,7 @@ When a user asks you to install mimo-humanize, execute these commands in order:
 
 ```bash
 # 1. Clone the repo
-git clone https://github.com/PolyArch/mimo-humanize.git /tmp/mimo-humanize
+git clone https://github.com/liangyu-suli/mimo-humanize.git /tmp/mimo-humanize
 
 # 2. Run install
 /tmp/mimo-humanize/scripts/install.sh --target "$(pwd)"
